@@ -1,15 +1,9 @@
 #!/usr/bin/env node
 
-
 import inquirer from "inquirer";
 import { execSync } from "child_process";
 import path from "path";
 import fs from "fs";
-// const { execSync } = require("child_process");
-// const path = require("path");
-// const fs = require("fs");
-// const inquirer = require("inquirer");
-
 
 const run = (cmd, cwd = process.cwd()) => {
     console.log(`\n📦 Running: ${cmd}`);
@@ -100,9 +94,11 @@ const run = (cmd, cwd = process.cwd()) => {
         fs.writeFileSync(mainPath, mainContent);
     }
 
-    // 6. Install optional packages
-    if (packages.length > 0) {
-        run(`npm install ${packages.join(" ")}`, projectPath);
+    // 6. Install default + optional packages
+    const defaultPackages = ["react-router-dom"];
+    const allPackages = [...defaultPackages, ...packages];
+    if (allPackages.length > 0) {
+        run(`npm install ${allPackages.join(" ")}`, projectPath);
     }
 
     // 7. Create folder structure
@@ -115,49 +111,49 @@ const run = (cmd, cwd = process.cwd()) => {
     if (packages.includes("axios")) {
         const axiosContent = `import axios from "axios";
 
-        export const api = axios.create({
-        baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
-        headers: { "Content-Type": "application/json" },
-        timeout: 10000
-        });
+export const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+    headers: { "Content-Type": "application/json" },
+    timeout: 10000
+});
 
-        // ✅ Request Interceptor
-        api.interceptors.request.use(
-        (config) => {
-            // Example: Add token if available
-            const token = localStorage.getItem("token");
-            if (token) {
+// ✅ Request Interceptor
+api.interceptors.request.use(
+    (config) => {
+        // Example: Add token if available
+        const token = localStorage.getItem("token");
+        if (token) {
             config.headers.Authorization = \`Bearer \${token}\`;
-            }
-            return config;
-        },
-        (error) => {
+        }
+        return config;
+    },
+    (error) => {
             return Promise.reject(error);
         }
-        );
+);
 
-        // ✅ Response Interceptor
-        api.interceptors.response.use(
-        (response) => {
+// ✅ Response Interceptor
+api.interceptors.response.use(
+    (response) => {
             return response.data; // Return only data for convenience
         },
-        (error) => {
-            if (error.response) {
+    (error) => {
+        if (error.response) {
             console.error("API Error:", error.response.data?.message || error.message);
             // Example: Handle unauthorized
             if (error.response.status === 401) {
-                // Optionally redirect to login
+            // Optionally redirect to login
                 window.location.href = "/login";
             }
-            } else if (error.request) {
+        } else if (error.request) {
             console.error("No response received from server.");
-            } else {
+        } else {
             console.error("Request setup error:", error.message);
-            }
-            return Promise.reject(error);
         }
-        );
-        `;
+        return Promise.reject(error);
+    }
+);
+`;
 
         fs.writeFileSync(path.join(projectPath, "src", "utils", "axiosInstance.js"), axiosContent);
     }
@@ -174,7 +170,7 @@ const run = (cmd, cwd = process.cwd()) => {
     appContent = appContent.replace(/import\s+['"]\.\/App\.css['"];?/g, ""); // remove App.css import
     appContent = `export default function App() {
   return (
-   <div
+    <div
       style={{
         display: "flex",
         flexDirection: "column",
@@ -202,9 +198,31 @@ const run = (cmd, cwd = process.cwd()) => {
       </p>
     </div>
   );
-}
-`;
+}`;
     fs.writeFileSync(appFile, appContent);
+
+    // 10. Default Router setup in main.jsx
+    const mainFile = fs.existsSync(path.join(projectPath, "src/main.jsx"))
+        ? "src/main.jsx"
+        : "src/main.tsx";
+    const mainPath = path.join(projectPath, mainFile);
+
+    const routerSetup = `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import App from './App';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>
+);`;
+
+    fs.writeFileSync(mainPath, routerSetup);
 
     console.log("\n✅ Setup complete!");
     console.log(`\nNext steps:\n  cd ${projectName}\n  npm run dev`);
