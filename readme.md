@@ -1,6 +1,6 @@
-# ⚡ quick-react (React Package Solution)
+# ⚡ quickstart-react (React Package Solution)
 
-🚀 **quick-react** is an open-source CLI tool that lets you instantly create a Vite + React app with your choice of CSS framework, optional packages, and pre-configured project structure — all in one command.
+🚀 **quickstart-react** is an open-source CLI tool that lets you instantly create a Vite + React app with your choice of CSS framework, optional packages, and pre-configured project structure — all in one command.
 
 ## ✨ Features
 - **Interactive Setup** — prompts you for project name, CSS framework, and optional packages
@@ -14,18 +14,18 @@
 ## 📦 Installation
 You don’t need to install it globally — run it instantly with `npx`:
 ```bash
-npx quick-react
+npx quickstart-react
 ```
 
 ## 🛠 Usage
-When you run `npx quick-react`, you will be prompted to:
+When you run `npx quickstart-react`, you will be prompted to:
 1. **Enter Project Name** — e.g., `my-app`
 2. **Choose CSS Framework** — Tailwind, Bootstrap, or MUI
 3. **Select Optional Packages** — choose from a list of commonly used React libraries
 
 Example run:
 ```bash
-npx quick-react
+npx quickstart-react
 ```
 
 ### Example Walkthrough
@@ -90,7 +90,7 @@ You can add these during setup:
 
 ## 🚀 Quick Start
 ```bash
-npx quick-react my-dashboard
+npx quickstart-react my-dashboard
 ```
 Select Tailwind, Bootstrap, or MUI, add any packages, and start coding immediately
 
@@ -105,6 +105,5 @@ We welcome contributions! Follow these steps:
 Before submitting, please ensure:
 - Your code follows project style guidelines
 - You have tested your changes locally
-
 
 #### Happy Hacking 🐱‍🏍
