@@ -1,4 +1,4 @@
-# quick-react (React Package Solution)
+# ⚡ quick-react (React Package Solution)
 
 🚀 **quick-react** is an open-source CLI tool that lets you instantly create a Vite + React app with your choice of CSS framework, optional packages, and pre-configured project structure — all in one command.
 
