@@ -92,7 +92,7 @@ You can add these during setup:
 ```bash
 npx quick-react my-dashboard
 ```
-Select Tailwind, Bootstrap, or MUI, add any packages, and start coding immediately.
+Select Tailwind, Bootstrap, or MUI, add any packages, and start coding immediately
 
 ## 👐 Contributing
 We welcome contributions! Follow these steps:
