@@ -22,7 +22,12 @@ const run = (cmd, cwd = process.cwd()) => {
             type: "list",
             name: "cssFramework",
             message: "Choose a CSS framework:",
-            choices: ["Tailwind", "Bootstrap", "MUI"]
+            choices: [
+                "Tailwind",
+                "Bootstrap (CDN)",
+                "React Bootstrap",
+                "MUI"
+            ]
         }
     ]);
 
@@ -64,23 +69,34 @@ const run = (cmd, cwd = process.cwd()) => {
             : "src/main.tsx";
         const mainPath = path.join(projectPath, mainFile);
         let mainContent = fs.readFileSync(mainPath, "utf-8");
-        mainContent = mainContent.replace(/import\s+['"]\.\/index\.css['"];?/g, ""); // remove default CSS import
+        mainContent = mainContent.replace(/import\s+['"]\.\/index\.css['"];?/g, "");
         if (!mainContent.includes(`import './index.css'`)) {
             mainContent = `import './index.css';\n` + mainContent;
         }
         fs.writeFileSync(mainPath, mainContent);
-    } else if (cssFramework === "Bootstrap") {
-        run(`npm install bootstrap`, projectPath);
+
+    } else if (cssFramework === "Bootstrap (CDN)") {
+        const indexHtmlPath = path.join(projectPath, "index.html");
+        let indexHtml = fs.readFileSync(indexHtmlPath, "utf-8");
+        indexHtml = indexHtml.replace(
+            /<head>/,
+            `<head>\n    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">\n    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>`
+        );
+        fs.writeFileSync(indexHtmlPath, indexHtml);
+
+    } else if (cssFramework === "React Bootstrap") {
+        run(`npm install react-bootstrap bootstrap`, projectPath);
         const mainFile = fs.existsSync(path.join(projectPath, "src/main.jsx"))
             ? "src/main.jsx"
             : "src/main.tsx";
         const mainPath = path.join(projectPath, mainFile);
         let mainContent = fs.readFileSync(mainPath, "utf-8");
         mainContent = mainContent
-            .replace(/import\s+['"]\.\/index\.css['"];?/g, "") // remove vite css import
-            .replace(/import\s+['"]\.\/App\.css['"];?/g, ""); // remove App.css import
+            .replace(/import\s+['"]\.\/index\.css['"];?/g, "")
+            .replace(/import\s+['"]\.\/App\.css['"];?/g, "");
         mainContent = `import 'bootstrap/dist/css/bootstrap.min.css';\n` + mainContent;
         fs.writeFileSync(mainPath, mainContent);
+
     } else if (cssFramework === "MUI") {
         run(`npm install @mui/material @emotion/react @emotion/styled`, projectPath);
         const mainFile = fs.existsSync(path.join(projectPath, "src/main.jsx"))
@@ -158,17 +174,21 @@ api.interceptors.response.use(
         fs.writeFileSync(path.join(projectPath, "src", "utils", "axiosInstance.js"), axiosContent);
     }
 
-    // 9. Clean up default CSS files from Vite
+    // 9. Clean up default CSS files (centralized)
     const appCssPath = path.join(projectPath, "src", "App.css");
     if (fs.existsSync(appCssPath)) fs.unlinkSync(appCssPath);
 
+    const indexCssPath = path.join(projectPath, "src", "index.css");
+    if (cssFramework !== "Tailwind" && fs.existsSync(indexCssPath)) {
+        fs.unlinkSync(indexCssPath);
+    }
+
+    // 10. Replace App.jsx content
     const appFile = fs.existsSync(path.join(projectPath, "src/App.jsx"))
         ? path.join(projectPath, "src/App.jsx")
         : path.join(projectPath, "src/App.tsx");
 
-    let appContent = fs.readFileSync(appFile, "utf-8");
-    appContent = appContent.replace(/import\s+['"]\.\/App\.css['"];?/g, ""); // remove App.css import
-    appContent = `export default function App() {
+    let appContent = `export default function App() {
   return (
     <div
       style={{
@@ -201,13 +221,24 @@ api.interceptors.response.use(
 }`;
     fs.writeFileSync(appFile, appContent);
 
-    // 10. Default Router setup in main.jsx
+    // 11. Default Router setup in main.jsx
     const mainFile = fs.existsSync(path.join(projectPath, "src/main.jsx"))
         ? "src/main.jsx"
         : "src/main.tsx";
     const mainPath = path.join(projectPath, mainFile);
 
-    const routerSetup = `import React from 'react';
+    let cssImports = "";
+    if (cssFramework === "React Bootstrap") {
+        cssImports = `import 'bootstrap/dist/css/bootstrap.min.css';\n`;
+    } else if (cssFramework === "Tailwind") {
+        cssImports = `import './index.css';\n`;
+    } else if (cssFramework === "Bootstrap (CDN)") {
+        cssImports = ""; // CDN already added in index.html
+    } else if (cssFramework === "MUI") {
+        cssImports = ""; // no CSS import needed
+    }
+
+    const routerSetup = `${cssImports}import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
@@ -223,6 +254,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 );`;
 
     fs.writeFileSync(mainPath, routerSetup);
+
 
     console.log("\n✅ Setup complete!");
     console.log(`\nNext steps:\n  cd ${projectName}\n  npm run dev`);
