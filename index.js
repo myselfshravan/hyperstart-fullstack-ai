@@ -1,38 +1,31 @@
 #!/usr/bin/env node
-
 import inquirer from "inquirer";
-import { execSync } from "child_process";
 import path from "path";
-import fs from "fs";
-
-const run = (cmd, cwd = process.cwd()) => {
-    console.log(`\n📦 Running: ${cmd}`);
-    execSync(cmd, { stdio: "inherit", cwd });
-};
+import { run, createFolder, deleteFile } from './lib/utils.js';
+import { initializePWA } from './lib/pwa.js';
+import { setupCSSFramework } from './lib/css-frameworks.js';
+import { createAxiosSetup, createAppComponent, setupRouterMain, createPWAReadme } from './lib/templates.js';
 
 (async () => {
-    // 1. Ask project name
-    const { projectName } = await inquirer.prompt([
-        { type: "input", name: "projectName", message: "Enter project name:" }
-    ]);
-
-    // 2. Ask for CSS framework
-    const { cssFramework } = await inquirer.prompt([
+    // 1. Collect user inputs
+    const answers = await inquirer.prompt([
+        { 
+            type: "input", 
+            name: "projectName", 
+            message: "Enter project name:" 
+        },
         {
             type: "list",
             name: "cssFramework",
             message: "Choose a CSS framework:",
-            choices: [
-                "Tailwind",
-                "Bootstrap (CDN)",
-                "React Bootstrap",
-                "MUI"
-            ]
-        }
-    ]);
-
-    // 3. Ask optional packages
-    const { packages } = await inquirer.prompt([
+            choices: ["Tailwind", "Bootstrap (CDN)", "React Bootstrap", "MUI"]
+        },
+        {
+            type: "confirm",
+            name: "isPWA",
+            message: "Do you want to make this a Progressive Web App (PWA)?",
+            default: false
+        },
         {
             type: "checkbox",
             name: "packages",
@@ -48,214 +41,62 @@ const run = (cmd, cwd = process.cwd()) => {
         }
     ]);
 
-    // 4. Create Vite + React project
-    run(`npm create vite@latest ${projectName} -- --template react`);
+    const { projectName, cssFramework, isPWA, packages } = answers;
     const projectPath = path.join(process.cwd(), projectName);
 
-    // 5. Install chosen CSS framework
-    if (cssFramework === "Tailwind") {
-        run(`npm install tailwindcss @tailwindcss/vite`, projectPath);
+    console.log(`\n🚀 Creating ${projectName}${isPWA ? ' with PWA capabilities' : ''}...`);
 
-        const viteConfigPath = path.join(projectPath, "vite.config.js");
-        let viteConfig = fs.readFileSync(viteConfigPath, "utf-8");
-        viteConfig = `import tailwindcss from '@tailwindcss/vite'\n` + viteConfig;
-        viteConfig = viteConfig.replace(/plugins:\s*\[/, "plugins: [\n    tailwindcss(),");
-        fs.writeFileSync(viteConfigPath, viteConfig);
+    // 2. Create Vite project
+    run(`npm create vite@latest ${projectName} -- --template react`);
 
-        fs.writeFileSync(path.join(projectPath, "src", "index.css"), `@import "tailwindcss";\n`);
+    // 3. Create all necessary folder structure first
+    const folders = ["components", "pages", "hooks", "store", "utils", "assets"];
+    folders.forEach((folder) => {
+        createFolder(path.join(projectPath, "src", folder));
+    });
 
-        const mainFile = fs.existsSync(path.join(projectPath, "src/main.jsx"))
-            ? "src/main.jsx"
-            : "src/main.tsx";
-        const mainPath = path.join(projectPath, mainFile);
-        let mainContent = fs.readFileSync(mainPath, "utf-8");
-        mainContent = mainContent.replace(/import\s+['"]\.\/index\.css['"];?/g, "");
-        if (!mainContent.includes(`import './index.css'`)) {
-            mainContent = `import './index.css';\n` + mainContent;
-        }
-        fs.writeFileSync(mainPath, mainContent);
-
-    } else if (cssFramework === "Bootstrap (CDN)") {
-        const indexHtmlPath = path.join(projectPath, "index.html");
-        let indexHtml = fs.readFileSync(indexHtmlPath, "utf-8");
-        indexHtml = indexHtml.replace(
-            /<head>/,
-            `<head>\n    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">\n    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>`
-        );
-        fs.writeFileSync(indexHtmlPath, indexHtml);
-
-    } else if (cssFramework === "React Bootstrap") {
-        run(`npm install react-bootstrap bootstrap`, projectPath);
-        const mainFile = fs.existsSync(path.join(projectPath, "src/main.jsx"))
-            ? "src/main.jsx"
-            : "src/main.tsx";
-        const mainPath = path.join(projectPath, mainFile);
-        let mainContent = fs.readFileSync(mainPath, "utf-8");
-        mainContent = mainContent
-            .replace(/import\s+['"]\.\/index\.css['"];?/g, "")
-            .replace(/import\s+['"]\.\/App\.css['"];?/g, "");
-        mainContent = `import 'bootstrap/dist/css/bootstrap.min.css';\n` + mainContent;
-        fs.writeFileSync(mainPath, mainContent);
-
-    } else if (cssFramework === "MUI") {
-        run(`npm install @mui/material @emotion/react @emotion/styled`, projectPath);
-        const mainFile = fs.existsSync(path.join(projectPath, "src/main.jsx"))
-            ? "src/main.jsx"
-            : "src/main.tsx";
-        const mainPath = path.join(projectPath, mainFile);
-        let mainContent = fs.readFileSync(mainPath, "utf-8");
-        mainContent = mainContent
-            .replace(/import\s+['"]\.\/index\.css['"];?/g, "")
-            .replace(/import\s+['"]\.\/App\.css['"];?/g, "");
-        fs.writeFileSync(mainPath, mainContent);
-    }
-
-    // 6. Install default + optional packages
+    // 4. Install packages
     const defaultPackages = ["react-router-dom"];
     const allPackages = [...defaultPackages, ...packages];
     if (allPackages.length > 0) {
         run(`npm install ${allPackages.join(" ")}`, projectPath);
     }
 
-    // 7. Create folder structure
-    const folders = ["components", "pages", "hooks", "store", "utils", "assets"];
-    folders.forEach((folder) => {
-        fs.mkdirSync(path.join(projectPath, "src", folder), { recursive: true });
-    });
+    // 5. Setup PWA if selected (after folder structure is created)
+    if (isPWA) {
+        initializePWA(projectPath, projectName);
+    }
 
-    // 8. Axios setup if chosen
+    // 6. Setup CSS framework
+    setupCSSFramework(cssFramework, projectPath);
+
+    // 7. Setup Axios if selected
     if (packages.includes("axios")) {
-        const axiosContent = `import axios from "axios";
-
-export const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
-    headers: { "Content-Type": "application/json" },
-    timeout: 10000
-});
-
-// ✅ Request Interceptor
-api.interceptors.request.use(
-    (config) => {
-        // Example: Add token if available
-        const token = localStorage.getItem("token");
-        if (token) {
-            config.headers.Authorization = \`Bearer \${token}\`;
-        }
-        return config;
-    },
-    (error) => {
-            return Promise.reject(error);
-        }
-);
-
-// ✅ Response Interceptor
-api.interceptors.response.use(
-    (response) => {
-            return response.data; // Return only data for convenience
-        },
-    (error) => {
-        if (error.response) {
-            console.error("API Error:", error.response.data?.message || error.message);
-            // Example: Handle unauthorized
-            if (error.response.status === 401) {
-            // Optionally redirect to login
-                window.location.href = "/login";
-            }
-        } else if (error.request) {
-            console.error("No response received from server.");
-        } else {
-            console.error("Request setup error:", error.message);
-        }
-        return Promise.reject(error);
-    }
-);
-`;
-
-        fs.writeFileSync(path.join(projectPath, "src", "utils", "axiosInstance.js"), axiosContent);
+        createAxiosSetup(projectPath);
     }
 
-    // 9. Clean up default CSS files (centralized)
-    const appCssPath = path.join(projectPath, "src", "App.css");
-    if (fs.existsSync(appCssPath)) fs.unlinkSync(appCssPath);
-
-    const indexCssPath = path.join(projectPath, "src", "index.css");
-    if (cssFramework !== "Tailwind" && fs.existsSync(indexCssPath)) {
-        fs.unlinkSync(indexCssPath);
+    // 8. Clean up default boilerplate files
+    deleteFile(path.join(projectPath, "src", "App.css"));
+    if (cssFramework !== "Tailwind") {
+        deleteFile(path.join(projectPath, "src", "index.css"));
     }
 
-    // 10. Replace App.jsx content
-    const appFile = fs.existsSync(path.join(projectPath, "src/App.jsx"))
-        ? path.join(projectPath, "src/App.jsx")
-        : path.join(projectPath, "src/App.tsx");
+    // 9. Generate clean templates
+    createAppComponent(projectPath, projectName, isPWA);
+    setupRouterMain(projectPath, cssFramework);
+    
+    // 10. Create comprehensive README
+    createPWAReadme(projectPath, projectName, cssFramework, packages, isPWA);
 
-    let appContent = `export default function App() {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        fontFamily: "sans-serif",
-        background: "#f9fafb",
-        color: "#111",
-        textAlign: "center",
-      }}
-    >
-      <h1
-        style={{
-          fontSize: "2.5rem",
-          marginBottom: "0.5rem",
-          fontWeight: 600,
-        }}
-      >
-        Welcome to{" "}
-        <span style={{ color: "#2563eb" }}>${projectName}</span> 🚀
-      </h1>
-      <p style={{ fontSize: "1.1rem", color: "#555" }}>
-        Your project is ready. Start building amazing things!
-      </p>
-    </div>
-  );
-}`;
-    fs.writeFileSync(appFile, appContent);
-
-    // 11. Default Router setup in main.jsx
-    const mainFile = fs.existsSync(path.join(projectPath, "src/main.jsx"))
-        ? "src/main.jsx"
-        : "src/main.tsx";
-    const mainPath = path.join(projectPath, mainFile);
-
-    let cssImports = "";
-    if (cssFramework === "React Bootstrap") {
-        cssImports = `import 'bootstrap/dist/css/bootstrap.min.css';\n`;
-    } else if (cssFramework === "Tailwind") {
-        cssImports = `import './index.css';\n`;
-    } else if (cssFramework === "Bootstrap (CDN)") {
-        cssImports = ""; // CDN already added in index.html
-    } else if (cssFramework === "MUI") {
-        cssImports = ""; // no CSS import needed
-    }
-
-    const routerSetup = `${cssImports}import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import App from './App';
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
-);`;
-
-    fs.writeFileSync(mainPath, routerSetup);
-
-
+    // 11. Success message
     console.log("\n✅ Setup complete!");
-    console.log(`\nNext steps:\n  cd ${projectName}\n  npm run dev`);
+    if (isPWA) {
+        console.log("📱 PWA features enabled - your app can be installed on mobile devices!");
+        console.log("⚠️  Important: Replace placeholder SVG icons with proper PNG icons for production");
+    }
+    console.log(`\nNext steps:\n  cd ${projectName}\n  npm install\n  npm run dev`);
+    
+    if (isPWA) {
+        console.log(`\n📱 To test PWA:\n  npm run build\n  npm run preview\n  Open http://localhost:4173 and test install/offline features`);
+    }
 })();
