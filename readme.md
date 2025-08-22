@@ -8,24 +8,28 @@
 ## ✨ What's New in Hyperstart?
 
 ### 🔥 Firebase Integration
+
 - **Authentication**: Complete auth system with Google Sign-in, email/password
 - **Firestore Database**: Real-time database with React hooks
 - **Storage**: File upload and management system
 - **Auto-generated**: Firebase config, hooks, and security rules
 
 ### 🎨 shadcn/ui + Tailwind CSS
+
 - **Modern Components**: Beautiful, accessible UI components
 - **Customizable**: Easy theme customization with CSS variables
 - **Dark Mode**: Built-in dark mode support
 - **Component Library**: Button, Input, Card, Form, Dialog, Toast, and more
 
 ### 📋 Pre-built Templates
+
 - **Dashboard**: Admin panel with stats, charts, and user management
 - **Blog**: Content management with search and categories
 - **E-commerce**: Product catalog with cart and filters
 - **Landing Page**: Marketing site with hero, features, and contact forms
 
 ### 🚀 Enhanced Features
+
 - **Interactive Setup** — Choose template, Firebase services, and UI components
 - **Modern Stack** — Vite, React 18, TypeScript support
 - **PWA Ready** — Progressive Web App capabilities
@@ -38,6 +42,7 @@ npx create-hyperstart my-app
 ```
 
 Follow the interactive prompts to:
+
 1. **Choose a template** (Dashboard, Blog, E-commerce, Landing Page, or Basic)
 2. **Select CSS framework** (Tailwind + shadcn/ui, Tailwind, Bootstrap, MUI)
 3. **Pick Firebase services** (Auth, Firestore, Storage)
@@ -48,20 +53,23 @@ Follow the interactive prompts to:
 ## 🎯 Example Usage
 
 ### Create a Dashboard with Firebase Auth + Firestore
+
 ```bash
 npx create-hyperstart my-dashboard
 # Select: Dashboard Template → Tailwind + shadcn/ui → Firebase Auth + Firestore → Button, Card, Form
 ```
 
 ### Create an E-commerce Site
+
 ```bash
 npx create-hyperstart my-store
 # Select: E-commerce Template → Tailwind + shadcn/ui → Firestore → Button, Card, Input, Select
 ```
 
 ### Create a Blog with CMS
+
 ```bash
-npx create-hyperstart my-blog  
+npx create-hyperstart my-blog
 # Select: Blog Template → Tailwind + shadcn/ui → Firebase Auth + Firestore → Card, Input, Form
 ```
 
@@ -107,12 +115,13 @@ my-app/
 ## 🔥 Firebase Integration Features
 
 ### 🔐 Authentication System
+
 ```jsx
-import { useAuth } from './hooks/useAuth';
+import { useAuth } from "./hooks/useAuth";
 
 function MyComponent() {
   const { user, login, logout, signup } = useAuth();
-  
+
   return (
     <div>
       {user ? (
@@ -126,20 +135,23 @@ function MyComponent() {
 ```
 
 ### 🗄️ Firestore Database
+
 ```jsx
-import { useCollection, useFirestore } from './hooks/useFirestore';
+import { useCollection, useFirestore } from "./hooks/useFirestore";
 
 function TodoList() {
-  const { documents: todos } = useCollection('todos');
-  const { addDocument } = useFirestore('todos');
-  
+  const { documents: todos } = useCollection("todos");
+  const { addDocument } = useFirestore("todos");
+
   const addTodo = () => {
-    addDocument({ text: 'New todo', completed: false });
+    addDocument({ text: "New todo", completed: false });
   };
-  
+
   return (
     <div>
-      {todos?.map(todo => <div key={todo.id}>{todo.text}</div>)}
+      {todos?.map((todo) => (
+        <div key={todo.id}>{todo.text}</div>
+      ))}
       <button onClick={addTodo}>Add Todo</button>
     </div>
   );
@@ -147,17 +159,18 @@ function TodoList() {
 ```
 
 ### 📁 File Storage
+
 ```jsx
-import { useStorage } from './hooks/useStorage';
+import { useStorage } from "./hooks/useStorage";
 
 function FileUpload() {
   const { uploadFile, uploading, uploadProgress } = useStorage();
-  
+
   const handleUpload = async (file) => {
     const result = await uploadFile(file, `uploads/${file.name}`);
-    console.log('Upload complete:', result.url);
+    console.log("Upload complete:", result.url);
   };
-  
+
   return (
     <div>
       <input type="file" onChange={(e) => handleUpload(e.target.files[0])} />
@@ -172,9 +185,9 @@ function FileUpload() {
 Hyperstart comes with beautiful, accessible components ready to use:
 
 ```jsx
-import { Button } from './components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card';
-import { Input } from './components/ui/input';
+import { Button } from "./components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { Input } from "./components/ui/input";
 
 function MyForm() {
   return (
@@ -197,43 +210,50 @@ function MyForm() {
 ## 🏗️ Available Templates
 
 ### 📊 Dashboard Template
+
 - Sidebar navigation with stats cards
 - User management interface
 - Data visualization ready
 - Responsive design for desktop and mobile
 
-### 📝 Blog Template  
+### 📝 Blog Template
+
 - Post listing and detail pages
 - Search and category filtering
 - SEO-friendly structure
 - Content management interface
 
 ### 🛒 E-commerce Template
+
 - Product catalog with search/filters
 - Shopping cart functionality
 - Category-based organization
 - Responsive product grid
 
 ### 🚀 Landing Page Template
+
 - Hero section with CTAs
-- Feature showcase sections  
+- Feature showcase sections
 - Newsletter signup form
 - Contact and social links
 
 ## 🚀 Getting Started
 
 ### 1. Create Your App
+
 ```bash
 npx create-hyperstart my-awesome-app
 ```
 
 ### 2. Navigate and Install
+
 ```bash
 cd my-awesome-app
 npm install
 ```
 
 ### 3. Configure Firebase (if selected)
+
 ```bash
 # Copy environment file
 cp .env.example .env.local
@@ -242,6 +262,7 @@ cp .env.example .env.local
 ```
 
 ### 4. Start Development
+
 ```bash
 npm run dev
 ```
@@ -257,14 +278,16 @@ Your app will be running at `http://localhost:5173`! 🎉
 ✅ **Type Safe** - Full TypeScript support  
 ✅ **Mobile First** - Responsive design out of the box  
 ✅ **PWA Ready** - Progressive Web App capabilities  
-✅ **Open Source** - MIT licensed and community driven  
+✅ **Open Source** - MIT licensed and community driven
 
 ## 🔧 Advanced Usage
 
 ### Custom Templates
+
 Want to add your own template? Check out our [template guide](docs/templates.md).
 
 ### Environment Configuration
+
 ```bash
 # .env.local
 VITE_FIREBASE_API_KEY=your-api-key
@@ -274,6 +297,7 @@ VITE_API_URL=https://your-api.com
 ```
 
 ### Adding More Components
+
 ```bash
 # Add more shadcn/ui components
 npx shadcn-ui@latest add badge
@@ -286,14 +310,15 @@ npx shadcn-ui@latest add calendar
 We welcome contributions! Here are ways you can help:
 
 - 🐛 **Report bugs** - Create issues for any problems you encounter
-- ✨ **Suggest features** - Share ideas for new templates or integrations  
+- ✨ **Suggest features** - Share ideas for new templates or integrations
 - 📝 **Improve docs** - Help make our documentation clearer
 - 🔧 **Submit PRs** - Contribute code improvements or new features
 - ⭐ **Star the repo** - Show your support and help others discover Hyperstart
 
 ### Development Setup
+
 ```bash
-git clone https://github.com/harshgupta20/hyperstart-fullstack-ai.git
+git clone https://github.com/myselfshravan/hyperstart-fullstack-ai.git
 cd hyperstart-fullstack-ai
 npm install
 npm link  # Test your changes locally
@@ -302,6 +327,7 @@ npm link  # Test your changes locally
 ## 📈 Roadmap
 
 🔮 **Coming Soon:**
+
 - [ ] Next.js template support
 - [ ] AI integrations (OpenAI, Anthropic)
 - [ ] Database alternatives (Supabase, PlanetScale)
@@ -331,7 +357,7 @@ A: Since you run Hyperstart with `npx`, you always get the latest version automa
 ## 📞 Support & Community
 
 - 💬 **Discord**: [Join our community](https://discord.gg/hyperstart) (coming soon)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/harshgupta20/hyperstart-fullstack-ai/issues)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/myselfshravan/hyperstart-fullstack-ai/issues)
 - 📧 **Email**: hello@hyperstart.dev (coming soon)
 - 🐦 **Twitter**: [@HyperstartDev](https://twitter.com/HyperstartDev) (coming soon)
 
@@ -339,7 +365,7 @@ A: Since you run Hyperstart with `npx`, you always get the latest version automa
 
 Built something awesome with Hyperstart? We'd love to feature it! Share your projects:
 
-- Submit via [GitHub Discussions](https://github.com/harshgupta20/hyperstart-fullstack-ai/discussions)
+- Submit via [GitHub Discussions](https://github.com/myselfshravan/hyperstart-fullstack-ai/discussions)
 - Tweet us [@HyperstartDev](https://twitter.com/HyperstartDev)
 - Create a PR adding your project to [SHOWCASE.md](SHOWCASE.md)
 
@@ -351,10 +377,10 @@ This project is [MIT](LICENSE) licensed - feel free to use it for personal and c
 
 If you find Hyperstart helpful, consider giving us a star! ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=harshgupta20/hyperstart-fullstack-ai&type=Date)](https://star-history.com/#harshgupta20/hyperstart-fullstack-ai&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=myselfshravan/hyperstart-fullstack-ai&type=Date)](https://star-history.com/#myselfshravan/hyperstart-fullstack-ai&Date)
 
 ---
 
 **Built with ❤️ by the open source community**
 
-[⚡ Get Started Now](https://github.com/harshgupta20/hyperstart-fullstack-ai) • [📖 Documentation](docs/) • [🚀 Examples](examples/) • [💬 Community](https://github.com/harshgupta20/hyperstart-fullstack-ai/discussions)
+[⚡ Get Started Now](https://github.com/myselfshravan/hyperstart-fullstack-ai) • [📖 Documentation](docs/) • [🚀 Examples](examples/) • [💬 Community](https://github.com/myselfshravan/hyperstart-fullstack-ai/discussions)
