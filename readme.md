@@ -1,256 +1,360 @@
-# ⚡ quickstart-react (React Package Solution)
+# ⚡ Hyperstart Fullstack AI
 
-🚀 **quickstart-react** is an open-source CLI tool that lets you instantly create a Vite + React app with your choice of CSS framework, optional packages, and pre-configured project structure — all in one command.
+🚀 **Hyperstart** is an open-source CLI tool that lets you instantly scaffold a **fullstack, AI-ready React app** with Firebase, shadcn/ui, and pre-built templates — all in one command.
 
-## ✨ Features
-- **Interactive Setup** — prompts you for project name, CSS framework, and optional packages
-- **CSS Framework Support** — Tailwind CSS, Bootstrap, or MUI (Material UI)
-- **Optional Packages** — easily add Axios, React Icons, React Hook Form, Yup, Formik, and Moment.js
-- **Automatic Folder Structure** — creates `components`, `pages`, `hooks`, `store`, `utils`, `assets` folders
-- **Boilerplate Ready** — replaces default Vite boilerplate with a clean welcome page
-- **Axios Setup** — pre-configured Axios instance if selected
-- **CSS Integration** — automatically configures your chosen CSS framework with Vite
+[![npm version](https://badge.fury.io/js/create-hyperstart.svg)](https://badge.fury.io/js/create-hyperstart)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 📦 Installation
-You don’t need to install it globally — run it instantly with `npx`:
+## ✨ What's New in Hyperstart?
+
+### 🔥 Firebase Integration
+- **Authentication**: Complete auth system with Google Sign-in, email/password
+- **Firestore Database**: Real-time database with React hooks
+- **Storage**: File upload and management system
+- **Auto-generated**: Firebase config, hooks, and security rules
+
+### 🎨 shadcn/ui + Tailwind CSS
+- **Modern Components**: Beautiful, accessible UI components
+- **Customizable**: Easy theme customization with CSS variables
+- **Dark Mode**: Built-in dark mode support
+- **Component Library**: Button, Input, Card, Form, Dialog, Toast, and more
+
+### 📋 Pre-built Templates
+- **Dashboard**: Admin panel with stats, charts, and user management
+- **Blog**: Content management with search and categories
+- **E-commerce**: Product catalog with cart and filters
+- **Landing Page**: Marketing site with hero, features, and contact forms
+
+### 🚀 Enhanced Features
+- **Interactive Setup** — Choose template, Firebase services, and UI components
+- **Modern Stack** — Vite, React 18, TypeScript support
+- **PWA Ready** — Progressive Web App capabilities
+- **Development Ready** — Pre-configured folder structure and best practices
+
+## 📦 Quick Start
+
 ```bash
-npx quickstart-react
+npx create-hyperstart my-app
 ```
 
-## 🛠 Usage
-When you run `npx quickstart-react`, you will be prompted to:
-1. **Enter Project Name** — e.g., `my-app`
-2. **Choose CSS Framework** — Tailwind, Bootstrap, or MUI
-3. **Select Optional Packages** — choose from a list of commonly used React libraries
+Follow the interactive prompts to:
+1. **Choose a template** (Dashboard, Blog, E-commerce, Landing Page, or Basic)
+2. **Select CSS framework** (Tailwind + shadcn/ui, Tailwind, Bootstrap, MUI)
+3. **Pick Firebase services** (Auth, Firestore, Storage)
+4. **Choose UI components** (Button, Input, Card, Form, etc.)
+5. **Enable PWA features** (Optional)
+6. **Add extra packages** (Axios, React Icons, etc.)
 
-Example run:
+## 🎯 Example Usage
+
+### Create a Dashboard with Firebase Auth + Firestore
 ```bash
-npx quickstart-react
+npx create-hyperstart my-dashboard
+# Select: Dashboard Template → Tailwind + shadcn/ui → Firebase Auth + Firestore → Button, Card, Form
 ```
 
-### Example Walkthrough
-```
-? Enter project name: my-portfolio
-? Choose a CSS framework: Tailwind
-? Select optional packages: Axios, React Icons
+### Create an E-commerce Site
+```bash
+npx create-hyperstart my-store
+# Select: E-commerce Template → Tailwind + shadcn/ui → Firestore → Button, Card, Input, Select
 ```
 
-This will:
-- Create a new Vite + React project in `my-portfolio/`
-- Install Tailwind CSS and configure it with Vite
-- Install Axios and React Icons
-- Create standard project folders
-- Add a clean welcome screen
-- Set up an Axios instance at `src/utils/axiosInstance.js`
+### Create a Blog with CMS
+```bash
+npx create-hyperstart my-blog  
+# Select: Blog Template → Tailwind + shadcn/ui → Firebase Auth + Firestore → Card, Input, Form
+```
 
-## 📂 Folder Structure
-After running, your project will look like this:
+## 📂 Generated Project Structure
+
+Depending on your selections, Hyperstart generates a tailored project structure:
+
 ```
 my-app/
+├── public/
+│   └── (PWA icons if enabled)
 ├── src/
 │   ├── components/
-│   ├── pages/
-│   ├── hooks/
-│   ├── store/
+│   │   ├── ui/              # shadcn/ui components (if selected)
+│   │   ├── auth/            # Firebase auth components
+│   │   └── [template]/      # Template-specific components
+│   ├── pages/               # Page components (Dashboard, Blog, etc.)
+│   ├── hooks/               # Custom React hooks
+│   │   ├── useAuth.js       # Firebase authentication
+│   │   ├── useFirestore.js  # Firestore database hooks
+│   │   └── useStorage.js    # Firebase storage hooks
+│   ├── lib/
+│   │   ├── firebase.js      # Firebase configuration
+│   │   └── utils.js         # shadcn/ui utilities
 │   ├── utils/
-│   │   └── axiosInstance.js (if Axios selected)
-│   ├── assets/
-│   ├── App.jsx
-│   ├── index.css
-│   └── main.jsx
-├── vite.config.js
-├── package.json
-└── README.md
+│   │   ├── axiosInstance.js # API client (if Axios selected)
+│   │   ├── firestoreUtils.js # Firestore helpers
+│   │   └── storageUtils.js  # Storage helpers
+│   ├── store/               # State management
+│   ├── assets/              # Static assets
+│   ├── App.jsx              # Main app component
+│   └── main.jsx             # Entry point
+├── firebase.json            # Firebase configuration
+├── firestore.rules          # Database security rules
+├── storage.rules            # Storage security rules
+├── .env.example             # Environment template
+├── components.json          # shadcn/ui config
+├── tailwind.config.js       # Tailwind configuration
+├── vite.config.js           # Vite configuration
+└── README.md                # Comprehensive project docs
 ```
 
-## ⚡ CSS Framework Integration
-### Tailwind CSS
-- Installs `tailwindcss` & `@tailwindcss/vite`
-- Updates `vite.config.js` to use Tailwind plugin
-- Sets up `index.css` with Tailwind directives
-- Removes unused default CSS files
+## 🔥 Firebase Integration Features
 
-### Bootstrap
-- Installs `bootstrap`
-- Imports Bootstrap CSS in `main.jsx`
-- Removes unused default CSS files
+### 🔐 Authentication System
+```jsx
+import { useAuth } from './hooks/useAuth';
 
-### MUI (Material UI)
-- Installs `@mui/material`, `@emotion/react`, `@emotion/styled`
-- Removes unused default CSS files
+function MyComponent() {
+  const { user, login, logout, signup } = useAuth();
+  
+  return (
+    <div>
+      {user ? (
+        <button onClick={logout}>Logout</button>
+      ) : (
+        <button onClick={() => login(email, password)}>Login</button>
+      )}
+    </div>
+  );
+}
+```
 
-## 🧩 Optional Packages
-You can add these during setup:
-- **Axios** — with a ready-to-use `axiosInstance.js`
-- **React Icons** — icon library
-- **React Hook Form** — form management
-- **Yup** — schema validation
-- **Formik** — form management
-- **Moment.js** — date/time utilities
+### 🗄️ Firestore Database
+```jsx
+import { useCollection, useFirestore } from './hooks/useFirestore';
 
-## 🚀 Quick Start
+function TodoList() {
+  const { documents: todos } = useCollection('todos');
+  const { addDocument } = useFirestore('todos');
+  
+  const addTodo = () => {
+    addDocument({ text: 'New todo', completed: false });
+  };
+  
+  return (
+    <div>
+      {todos?.map(todo => <div key={todo.id}>{todo.text}</div>)}
+      <button onClick={addTodo}>Add Todo</button>
+    </div>
+  );
+}
+```
+
+### 📁 File Storage
+```jsx
+import { useStorage } from './hooks/useStorage';
+
+function FileUpload() {
+  const { uploadFile, uploading, uploadProgress } = useStorage();
+  
+  const handleUpload = async (file) => {
+    const result = await uploadFile(file, `uploads/${file.name}`);
+    console.log('Upload complete:', result.url);
+  };
+  
+  return (
+    <div>
+      <input type="file" onChange={(e) => handleUpload(e.target.files[0])} />
+      {uploading && <div>Progress: {uploadProgress}%</div>}
+    </div>
+  );
+}
+```
+
+## 🎨 shadcn/ui Components
+
+Hyperstart comes with beautiful, accessible components ready to use:
+
+```jsx
+import { Button } from './components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card';
+import { Input } from './components/ui/input';
+
+function MyForm() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Contact Form</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <Input placeholder="Your name" />
+          <Input placeholder="Your email" />
+          <Button>Submit</Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## 🏗️ Available Templates
+
+### 📊 Dashboard Template
+- Sidebar navigation with stats cards
+- User management interface
+- Data visualization ready
+- Responsive design for desktop and mobile
+
+### 📝 Blog Template  
+- Post listing and detail pages
+- Search and category filtering
+- SEO-friendly structure
+- Content management interface
+
+### 🛒 E-commerce Template
+- Product catalog with search/filters
+- Shopping cart functionality
+- Category-based organization
+- Responsive product grid
+
+### 🚀 Landing Page Template
+- Hero section with CTAs
+- Feature showcase sections  
+- Newsletter signup form
+- Contact and social links
+
+## 🚀 Getting Started
+
+### 1. Create Your App
 ```bash
-npx quickstart-react my-dashboard
+npx create-hyperstart my-awesome-app
 ```
-Select Tailwind, Bootstrap, or MUI, add any packages, and start coding immediately
 
-## 👐 Contributing
-We welcome contributions! Follow these steps:
-1. Fork the repository
-2. Create a new branch: `git checkout -b feature-name`
-3. Commit your changes: `git commit -m "Added new feature"`
-4. Push to your branch: `git push origin feature-name`
-5. Open a Pull Request
-
-Before submitting, please ensure:
-- Your code follows project style guidelines
-- You have tested your changes locally
-
-#### Happy Hacking 🐱‍🏍
-
----
-
-
-Certainly! If you're planning to contribute to the existing project, here's how you can structure your pull request (PR) description, along with a proposed issue that can be raised on the `harshgupta20/quickstart-react` repository.
-
-### 1. **Issue to Raise**
-
-#### Title: **Enhance Quickstart-React with Firebase Integration and shadcn/ui Support**
-
-**Description:**
-We'd like to expand the functionality of the `quickstart-react` tool to support Firebase configuration, authentication, Firestore integration, and storage. Additionally, we'd like to add support for the shadcn/ui library for faster UI development using TailwindCSS. This would streamline the process for developers who need Firebase setup and ready-to-use UI components, similar to the "Lovable" tool.
-
-**Suggested Enhancements:**
-
-1. **Firebase Integration**:
-
-   * Optionally configure Firebase for Firestore, Authentication, and Storage during project setup.
-   * Automatically generate Firebase configuration files (`firebase.json` and `.env`).
-   * Include Firebase hooks and utility functions (for Auth, Firestore).
-
-2. **shadcn/ui Integration**:
-
-   * Optionally install and configure `shadcn/ui` components (like Buttons, Inputs, Cards, Forms) along with TailwindCSS.
-   * Provide choices to select components to include during project setup (e.g., Button, Input, Form components).
-
-3. **Project Template Options**:
-
-   * Allow the user to choose between different pre-configured project templates (E-commerce, Dashboard, Blog, etc.) with Firebase and UI component support.
-
-**Benefit**:
-This enhancement would allow developers to quickly scaffold React apps with Firebase integrated and pre-built UI components using TailwindCSS, significantly reducing setup time and increasing productivity for developers who use these tools.
-
----
-
-### 2. **Pull Request Description**
-
-#### Title: **Add Firebase Integration & shadcn/ui Support to Quickstart-React**
-
-**Description:**
-This PR enhances the `quickstart-react` CLI tool by adding options to integrate Firebase services (Authentication, Firestore, Storage) and shadcn/ui components during project initialization. The user is prompted to select Firebase services and UI components during the interactive setup. The Firebase configuration is automatically set up with `.env` variables, and Firebase hooks are generated for easy use.
-
-Additionally, the shadcn/ui library is integrated with TailwindCSS, making it easy to add UI components like Buttons, Inputs, Forms, and Cards.
-
-**Changes Made:**
-
-1. **Firebase Setup**:
-
-   * Added an interactive prompt to enable Firebase configuration (Authentication, Firestore, Storage).
-   * Automatically generate `firebase.json` and `.env` for Firebase setup.
-   * Set up Firebase hooks for authentication and Firestore access.
-
-2. **shadcn/ui Integration**:
-
-   * Added an interactive prompt to select shadcn/ui components (Button, Input, Form, Card).
-   * Configured TailwindCSS with shadcn preset and included shadcn/ui components.
-   * Generated UI components in the `src/components/ui/` folder based on user input.
-
-3. **Project Template**:
-
-   * Added options for different project templates (Dashboard, Blog, E-commerce) that come pre-configured with Firebase and UI components.
-
-4. **Folder Structure Changes**:
-
-   * Added `src/lib/firebase.js` for Firebase config and utility functions.
-   * Added `src/components/ui/` for shadcn/ui components.
-
-**Example Usage**:
-
-1. Run the CLI: `npx quickstart-react`
-2. Choose Firebase services (Auth, Firestore, etc.).
-3. Select shadcn/ui components to install (Button, Input, etc.).
-4. Choose a project template (Dashboard, Blog, etc.).
-
-**Next Steps**:
-
-* Review and test the changes for Firebase integration and UI setup.
-* Further improve Firebase function templates based on feedback.
-
----
-
-### 3. **PR Review Checklist**
-
-Before submitting the PR, make sure to include the following in the PR description:
-
-1. **Code quality**: Ensure the code follows the project’s code style and guidelines.
-2. **Documentation**: Update the README or relevant documentation to reflect the new features (Firebase integration, shadcn/ui support, etc.).
-3. **Tests**: If applicable, add or update tests for the new features. For Firebase, this could involve testing authentication hooks and Firestore utilities.
-4. **Interactive Setup**: Make sure the interactive prompts work as expected, allowing users to select Firebase services and UI components.
-
----
-
-### 4. **Discussion Points for PR Review**
-
-Here are some points to discuss with the repository owner (Harsh Gupta) and other collaborators during the review:
-
-* **Firebase Configuration**: Does the Firebase setup require any additional steps for different environments (e.g., production vs. local development)?
-* **shadcn/ui Customization**: Are there any specific components or configurations from `shadcn/ui` that should be included/excluded by default? Would you want to allow custom UI libraries in the future?
-* **CLI Interactivity**: Is the interactive setup smooth enough? Should we include any default configurations for commonly used services (like Firestore or Firebase Auth)?
-* **Project Templates**: What templates should be included by default? Are there other use cases that might be worth adding to the templates (e.g., mobile-first templates, admin dashboards, etc.)?
-
----
-
-### Example PR Template (for your contribution):
-
-````markdown
-# Add Firebase Integration & shadcn/ui Support
-
-## Description
-
-This PR enhances the `quickstart-react` CLI tool by adding Firebase integration (Auth, Firestore, Storage) and shadcn/ui support, which makes it easier to scaffold React apps with pre-configured Firebase services and TailwindCSS components.
-
-### Changes Made:
-1. **Firebase Integration**: 
-   - Firebase Auth, Firestore, and Storage setup.
-   - Generated Firebase configuration and hooks.
-   
-2. **shadcn/ui Integration**:
-   - Selectable UI components (Button, Input, Card, Form) from shadcn/ui.
-   - Configured TailwindCSS for shadcn/ui.
-
-3. **Project Template**: 
-   - Added E-commerce, Blog, and Dashboard templates.
-
-### Example Use Case:
+### 2. Navigate and Install
 ```bash
-npx quickstart-react
-````
+cd my-awesome-app
+npm install
+```
 
-1. Choose Firebase services.
-2. Select shadcn/ui components.
-3. Pick a project template (E-commerce, Blog, Dashboard).
+### 3. Configure Firebase (if selected)
+```bash
+# Copy environment file
+cp .env.example .env.local
 
-### Benefits:
+# Add your Firebase config to .env.local
+```
 
-* Faster project setup with Firebase and pre-built UI components.
-* Customizable templates to kickstart various types of apps.
+### 4. Start Development
+```bash
+npm run dev
+```
+
+Your app will be running at `http://localhost:5173`! 🎉
+
+## ⚡ Why Choose Hyperstart?
+
+✅ **Save Hours of Setup** - Skip the boilerplate and configuration  
+✅ **Production Ready** - Best practices and security built-in  
+✅ **Modern Stack** - Latest React, Vite, and Firebase features  
+✅ **Beautiful UI** - shadcn/ui components with Tailwind CSS  
+✅ **Type Safe** - Full TypeScript support  
+✅ **Mobile First** - Responsive design out of the box  
+✅ **PWA Ready** - Progressive Web App capabilities  
+✅ **Open Source** - MIT licensed and community driven  
+
+## 🔧 Advanced Usage
+
+### Custom Templates
+Want to add your own template? Check out our [template guide](docs/templates.md).
+
+### Environment Configuration
+```bash
+# .env.local
+VITE_FIREBASE_API_KEY=your-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_API_URL=https://your-api.com
+```
+
+### Adding More Components
+```bash
+# Add more shadcn/ui components
+npx shadcn-ui@latest add badge
+npx shadcn-ui@latest add dropdown-menu
+npx shadcn-ui@latest add calendar
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Here are ways you can help:
+
+- 🐛 **Report bugs** - Create issues for any problems you encounter
+- ✨ **Suggest features** - Share ideas for new templates or integrations  
+- 📝 **Improve docs** - Help make our documentation clearer
+- 🔧 **Submit PRs** - Contribute code improvements or new features
+- ⭐ **Star the repo** - Show your support and help others discover Hyperstart
+
+### Development Setup
+```bash
+git clone https://github.com/harshgupta20/hyperstart-fullstack-ai.git
+cd hyperstart-fullstack-ai
+npm install
+npm link  # Test your changes locally
+```
+
+## 📈 Roadmap
+
+🔮 **Coming Soon:**
+- [ ] Next.js template support
+- [ ] AI integrations (OpenAI, Anthropic)
+- [ ] Database alternatives (Supabase, PlanetScale)
+- [ ] Deployment automation (Vercel, Netlify)
+- [ ] Testing setup (Vitest, Testing Library)
+- [ ] Storybook integration
+- [ ] Docker containerization
+- [ ] GitHub Actions templates
+
+## 🙋‍♂️ FAQ
+
+**Q: Can I use Hyperstart with existing projects?**  
+A: Hyperstart is designed for new projects. For existing projects, you can manually copy the generated components and configurations.
+
+**Q: Is TypeScript supported?**  
+A: Yes! Hyperstart works with both JavaScript and TypeScript. The generated templates are compatible with both.
+
+**Q: Can I customize the generated templates?**  
+A: Absolutely! All generated code is yours to modify. Check out our customization guide for best practices.
+
+**Q: What if I don't need Firebase?**  
+A: No problem! You can skip Firebase during setup and use the tool just for React + shadcn/ui scaffolding.
+
+**Q: How do I update to the latest version?**  
+A: Since you run Hyperstart with `npx`, you always get the latest version automatically!
+
+## 📞 Support & Community
+
+- 💬 **Discord**: [Join our community](https://discord.gg/hyperstart) (coming soon)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/harshgupta20/hyperstart-fullstack-ai/issues)
+- 📧 **Email**: hello@hyperstart.dev (coming soon)
+- 🐦 **Twitter**: [@HyperstartDev](https://twitter.com/HyperstartDev) (coming soon)
+
+## 🏆 Showcase
+
+Built something awesome with Hyperstart? We'd love to feature it! Share your projects:
+
+- Submit via [GitHub Discussions](https://github.com/harshgupta20/hyperstart-fullstack-ai/discussions)
+- Tweet us [@HyperstartDev](https://twitter.com/HyperstartDev)
+- Create a PR adding your project to [SHOWCASE.md](SHOWCASE.md)
+
+## 📄 License
+
+This project is [MIT](LICENSE) licensed - feel free to use it for personal and commercial projects.
+
+## ⭐ Star History
+
+If you find Hyperstart helpful, consider giving us a star! ⭐
+
+[![Star History Chart](https://api.star-history.com/svg?repos=harshgupta20/hyperstart-fullstack-ai&type=Date)](https://star-history.com/#harshgupta20/hyperstart-fullstack-ai&Date)
 
 ---
 
-**Next Steps**:
+**Built with ❤️ by the open source community**
 
-* Review and test Firebase integration and UI components.
-* Further refine templates based on feedback.
-
-```
-
+[⚡ Get Started Now](https://github.com/harshgupta20/hyperstart-fullstack-ai) • [📖 Documentation](docs/) • [🚀 Examples](examples/) • [💬 Community](https://github.com/harshgupta20/hyperstart-fullstack-ai/discussions)

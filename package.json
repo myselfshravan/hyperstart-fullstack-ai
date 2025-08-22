@@ -1,7 +1,7 @@
 {
-  "name": "quickstart-react",
-  "version": "1.1.2",
-  "description": "A CLI tool to quickly scaffold a React + Vite project with optional CSS frameworks and useful packages, ready to use out of the box.",
+  "name": "create-hyperstart",
+  "version": "1.2.0",
+  "description": "⚡ Instantly scaffold a fullstack, AI-ready React app with Firebase, shadcn/ui, and pre-built templates in one command.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "start": "node index.js"
   },
   "bin": {
-    "quickstart-react": "index.js"
+    "create-hyperstart": "index.js"
   },
   "keywords": [
     "react",
@@ -21,20 +21,25 @@
     "tailwind",
     "bootstrap",
     "mui",
+    "firebase",
+    "shadcn",
+    "shadcn-ui",
+    "fullstack",
+    "ai",
     "javascript",
     "frontend",
-    "react-app"
+    "hyperstart"
   ],
   "author": "harshgupta20",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/harshgupta20/quickstart-react.git"
+    "url": "https://github.com/harshgupta20/hyperstart-fullstack-ai.git"
   },
   "bugs": {
-    "url": "https://github.com/harshgupta20/quickstart-react/issues"
+    "url": "https://github.com/harshgupta20/hyperstart-fullstack-ai/issues"
   },
-  "homepage": "https://github.com/harshgupta20/quickstart-react#readme",
+  "homepage": "https://github.com/harshgupta20/hyperstart-fullstack-ai#readme",
   "dependencies": {
     "inquirer": "^9.2.7"
   }
