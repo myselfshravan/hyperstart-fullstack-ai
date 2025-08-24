@@ -191,10 +191,21 @@ Create a fullstack, AI-ready React app in seconds.
     );
   }
 
-  // 10. Clean up default boilerplate files
+  // 10. Clean up default boilerplate files and fix imports
   deleteFile(path.join(projectPath, "src", "App.css"));
   if (!useShadcnUI && cssFramework !== "Tailwind") {
     deleteFile(path.join(projectPath, "src", "index.css"));
+  }
+  
+  // Fix App.jsx to remove App.css import for all templates
+  const appJsxPath = path.join(projectPath, "src", "App.jsx");
+  const fs = await import("fs/promises");
+  try {
+    let appContent = await fs.readFile(appJsxPath, "utf8");
+    appContent = appContent.replace(/import\s+['"]\.\/App\.css['"];?\s*\n?/g, "");
+    await fs.writeFile(appJsxPath, appContent);
+  } catch (error) {
+    console.warn("Could not fix App.jsx import:", error.message);
   }
 
   // 11. Generate clean templates (only for basic template)

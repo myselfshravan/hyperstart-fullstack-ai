@@ -354,19 +354,12 @@ A: No problem! You can skip Firebase during setup and use the tool just for Reac
 **Q: How do I update to the latest version?**  
 A: Since you run Hyperstart with `npx`, you always get the latest version automatically!
 
-## 📞 Support & Community
-
-- 💬 **Discord**: [Join our community](https://discord.gg/hyperstart) (coming soon)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/myselfshravan/hyperstart-fullstack-ai/issues)
-- 📧 **Email**: hello@hyperstart.dev (coming soon)
-- 🐦 **Twitter**: [@HyperstartDev](https://twitter.com/HyperstartDev) (coming soon)
 
 ## 🏆 Showcase
 
 Built something awesome with Hyperstart? We'd love to feature it! Share your projects:
 
 - Submit via [GitHub Discussions](https://github.com/myselfshravan/hyperstart-fullstack-ai/discussions)
-- Tweet us [@HyperstartDev](https://twitter.com/HyperstartDev)
 - Create a PR adding your project to [SHOWCASE.md](SHOWCASE.md)
 
 ## 📄 License
