@@ -1,5 +1,5 @@
 {
-  "name": "create-hyperstart",
+  "name": "hyperstart-fullstack-ai",
   "version": "1.2.0",
   "description": "⚡ Instantly scaffold a fullstack, AI-ready React app with Firebase, shadcn/ui, and pre-built templates in one command.",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "start": "node index.js"
   },
   "bin": {
-    "create-hyperstart": "index.js"
+    "hyperstart-fullstack-ai": "index.js"
   },
   "keywords": [
     "react",

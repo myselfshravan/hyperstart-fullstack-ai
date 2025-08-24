@@ -2,7 +2,7 @@
 
 🚀 **Hyperstart** is an open-source CLI tool that lets you instantly scaffold a **fullstack, AI-ready React app** with Firebase, shadcn/ui, and pre-built templates — all in one command.
 
-[![npm version](https://badge.fury.io/js/create-hyperstart.svg)](https://badge.fury.io/js/create-hyperstart)
+[![npm version](https://badge.fury.io/js/hyperstart-fullstack-ai.svg)](https://badge.fury.io/js/hyperstart-fullstack-ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## ✨ What's New in Hyperstart?
@@ -38,7 +38,7 @@
 ## 📦 Quick Start
 
 ```bash
-npx create-hyperstart my-app
+npx hyperstart-fullstack-ai my-app
 ```
 
 Follow the interactive prompts to:
@@ -55,21 +55,21 @@ Follow the interactive prompts to:
 ### Create a Dashboard with Firebase Auth + Firestore
 
 ```bash
-npx create-hyperstart my-dashboard
+npx hyperstart-fullstack-ai my-dashboard
 # Select: Dashboard Template → Tailwind + shadcn/ui → Firebase Auth + Firestore → Button, Card, Form
 ```
 
 ### Create an E-commerce Site
 
 ```bash
-npx create-hyperstart my-store
+npx hyperstart-fullstack-ai my-store
 # Select: E-commerce Template → Tailwind + shadcn/ui → Firestore → Button, Card, Input, Select
 ```
 
 ### Create a Blog with CMS
 
 ```bash
-npx create-hyperstart my-blog
+npx hyperstart-fullstack-ai my-blog
 # Select: Blog Template → Tailwind + shadcn/ui → Firebase Auth + Firestore → Card, Input, Form
 ```
 
@@ -242,7 +242,7 @@ function MyForm() {
 ### 1. Create Your App
 
 ```bash
-npx create-hyperstart my-awesome-app
+npx hyperstart-fullstack-ai my-awesome-app
 ```
 
 ### 2. Navigate and Install
